@@ -80,6 +80,48 @@ and then brief alerting for getting alarm :
 <img width="1763" height="273" alt="image" src="https://github.com/user-attachments/assets/792a4e44-ee73-4098-b07c-c064ed443da1" />
 
 
+<img width="936" height="349" alt="image" src="https://github.com/user-attachments/assets/e80840be-e727-4ef7-ae76-b46fad53f1c5" />
+
+
+<img width="936" height="488" alt="image" src="https://github.com/user-attachments/assets/3a64b184-a577-4da0-9c97-06b2cf6353b3" />
+
+
+<img width="531" height="534" alt="image" src="https://github.com/user-attachments/assets/9d88efd1-2207-4088-bdfb-898170616fdb" />
+
+```bash
+[PROBLEM] {EVENT.NAME}
+Host: {HOST.NAME}
+Severity: {EVENT.SEVERITY}
+Time: {EVENT.TIME} {EVENT.DATE}
+Item: {ITEM.NAME} = {ITEM.LASTVALUE}
+Info: {EVENT.OPDATA}
+Tags: {EVENT.TAGS}
+EventID: {EVENT.ID}
+```
+
+<img width="531" height="419" alt="image" src="https://github.com/user-attachments/assets/d2211b65-bf55-4646-ae59-36a0d2b5cb11" />
+
+```bash
+[OK] {EVENT.NAME}
+Host: {HOST.NAME}
+Recovered: {EVENT.RECOVERY.TIME} {EVENT.RECOVERY.DATE}
+Duration: {EVENT.DURATION}
+Was: {ITEM.NAME} = {ITEM.LASTVALUE1}
+Tags: {EVENT.TAGS}
+EventID: {EVENT.ID}
+```
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
