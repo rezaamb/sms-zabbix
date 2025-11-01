@@ -1,0 +1,78 @@
+##Making file
+```bash
+cd /usr/lib/zabbix/alertscripts
+vim smsapp.sh
+```
+##Bash File
+```bash
+#!/usr/bin/env bash
+# Usage:
+#   smsapp.sh "<MESSAGE>" "<RECEPTOR>" "<SENDER (optional)>" "<API_KEY (optional)>"
+
+API_URL="http://api.smsapp.ir/v2/sms/send/simple"
+
+MESSAGE="$1"
+RECEPTOR="$2"
+SENDER="${3:-10008642}"
+API_KEY="${4:-${SMSAPP_APIKEY:-}}"
+
+if [ -z "$MESSAGE" ] || [ -z "$RECEPTOR" ]; then
+  echo "Missing MESSAGE or RECEPTOR" >&2
+  exit 1
+fi
+
+if [ -z "$API_KEY" ]; then
+  echo "Missing API key" >&2
+  exit 1
+fi
+
+RESP_FILE="$(mktemp)"
+HTTP_CODE=$(curl --silent --show-error --location "$API_URL" \
+  -H "apikey: $API_KEY" \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  --data-urlencode "message=${MESSAGE}" \
+  --data-urlencode "receptor=${RECEPTOR}" \
+  --data-urlencode "sender=${SENDER}" \
+  --data-urlencode "output=Json" \
+  -o "$RESP_FILE" -w '%{http_code}')
+
+if [ "$HTTP_CODE" -ge 200 ] && [ "$HTTP_CODE" -lt 300 ]; then
+  rm -f "$RESP_FILE"
+  exit 0
+else
+  echo "HTTP $HTTP_CODE" >&2
+  cat "$RESP_FILE" >&2
+  rm -f "$RESP_FILE"
+  exit 1
+fi
+```
+##ADD AlertScriptsPath to Systemd File
+```
+sudo sed -i 's|^#\s*AlertScriptsPath=.*|AlertScriptsPath=/usr/lib/zabbix/alertscripts|' /etc/zabbix/zabbix_server.conf
+```
+##Give Premission
+```
+sudo chown zabbix:zabbix /usr/lib/zabbix/alertscripts/smsapp.sh
+sudo chmod 777 /usr/lib/zabbix/alertscripts/smsapp.sh
+```
+##Test command:
+```
+sudo -u zabbix bash -lc '/usr/lib/zabbix/alertscripts/smsapp.sh "Massage" "<Phone-number>" "10008642" "<api>"; echo exit:$?'
+```
+##Now Go on Zabbix UI :
+
+
+``` On Alerts click on Media Type and then create new One ```
+<img width="638" height="525" alt="image" src="https://github.com/user-attachments/assets/8aa901ca-7286-4b6d-b2b7-377e8947914a" />
+
+second tab :
+
+<img width="646" height="227" alt="image" src="https://github.com/user-attachments/assets/f4d19e2b-958a-4927-8d87-5f214b4ad227" />
+
+and then go to Administration , then Click On Macros Then Brief the Macro and Values:
+
+<img width="510" height="79" alt="image" src="https://github.com/user-attachments/assets/f3cd6bd9-18db-4b5b-bfe2-e186e7a43621" />
+
+so for Users Menu On Media Tab write Type to <smsapp.sh> and write phone number on Send to field!
+
+
