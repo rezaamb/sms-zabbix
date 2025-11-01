@@ -75,4 +75,12 @@ and then go to Administration , then Click On Macros Then Brief the Macro and Va
 
 so for Users Menu On Media Tab write Type to <smsapp.sh> and write phone number on Send to field!
 
+and then brief alerting for getting alarm :
+
+<img width="1763" height="273" alt="image" src="https://github.com/user-attachments/assets/792a4e44-ee73-4098-b07c-c064ed443da1" />
+
+
+
+
+
 
